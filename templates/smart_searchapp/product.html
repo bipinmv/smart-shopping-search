@@ -1,0 +1,130 @@
+{% extends 'smart_searchapp/header.html' %} {% load static %} {% static "pics" as pics %} {% block content %}
+
+<div class="new-container">
+    <!--{% if product%} -->
+    <div class="flex-product-container">
+        <div class="col flex-product-item">
+            <h5 style="color: rgba(35, 5, 41, 0.836);">{{product.prodname}}</h5>
+            <br>
+            <div>
+                <img id="zoomin" src="{{ product.img.url }}" alt="Cant load image" onmousemove="zoomIn(event)" onmouseout="zoomOut()" style="max-width: 40%; max-height:auto;">
+            </div>
+
+            <div>
+                <h5 style="margin-top: 25px;"> ₹ {{product.rate}}</h5>
+                {% if not user.is_authenticated %}
+                <button class="wishlist-icon">
+                    <a href="{% url 'user:add-to-wishlist' product.id %}" class="text-danger " title="Add to Wishlist">
+                        <span class="material-icons">favorite_border</span></a>
+                </button> {% endif %} {% if check %}
+                <button class="wishlist-icon">
+                    <a href="{% url 'user:add_to_wishlist' product.id %}" class="text-danger " title="Add to Wishlist">
+                        <span class="material-icons">favorite_border</span></a>
+                </button> {% else %} {% for witem in witem %}
+                <button class="wishlist-icon">
+                    <a href="{% url 'user:remove' witem.id %}" class="text-danger " title="Remove from Wishlist">
+                        <span class="fa fa-heart"></span></a>
+                </button>{% endfor %} {% endif %} {% for wishadd in messages %}
+                <br />
+                <br />
+                <div class="p-3 mb-2 bg-success text-white text-center">{{ wishadd }}</div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div id="">
+
+        </div>
+        <div class="col flex-product-item" id="preview">
+            <div class="tab-content tabWrapper" id="prod">
+                <h5>Product Information</h5>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr class="techSpecRow">
+                            <td class="techSpecTD1">Brand</td>
+                            <td class="techSpecTD2">
+                                {{product.brand}}
+                            </td>
+                        </tr>
+                        <tr class="techSpecRow">
+                            <td class="techSpecTD1">Name</td>
+                            <td class="techSpecTD2">
+                                {{product.prodname}}
+                            </td>
+                        </tr>
+                        <tr class="techSpecRow">
+                            <td class="techSpecTD1">Category</td>
+                            <td class="techSpecTD2">
+                                {{product.category}}
+                            </td>
+                        </tr>
+                        <tr class="techSpecRow">
+                            <td class="techSpecTD1">Description</td>
+                            <td class="techSpecTD2">
+                                <a href="#description"><button class="btn btn-sm btn-link">View</button></a>
+                            </td>
+                        </tr>
+                        <tr class="techSpecRow">
+                            <td class="techSpecTD1">Rate</td>
+                            <td class="techSpecTD2">₹ {{product.rate}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <a href="{% url 'user:add_to_cart' product.id %}" class="btn btn-warning">Add to Cart</a>
+
+                <div>
+                    <!-- {% for message in messages %}
+                    <p class="error"> {{message}}</p>
+                    {% endfor %} -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="flex-product-container">
+        <div class="col flex-product-item" id="description">
+            <div>
+                <h6 style="font-weight: bold; color:rgb(235, 100, 22);">Product description of {{product.prodname}}
+                </h6>
+                <pre>
+                    <span class="prediv">
+                    {{ product.description|linebreaks }}
+                </span>
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>{%endif%}
+
+<div class="totop">
+    <button onclick="totop()" id="totop" class="btn" title="Click to return to top of the page"><span
+            class="fa fa-angle-double-up"></span></button>
+</div>
+
+<script>
+    function zoomIn(event) {
+        var pre = document.getElementById("preview");
+        pre.style.visibility = "visible";
+        if ($('#zoomin').is(':hover')) {
+            var img = document.getElementById("zoomin");
+            var prod = document.getElementById("prod");
+            prod.style.visibility = "hidden";
+            pre.style.backgroundImage = "url('{{ product.img.url }}')";
+        }
+
+        var posX = event.offsetX;
+        var posY = event.offsetY;
+        pre.style.backgroundPosition = (-posX * 1.5) + "px " + (-posY * 1.5) + "px";
+
+    }
+
+    function zoomOut() {
+        var pre = document.getElementById("preview");
+        var prod = document.getElementById("prod");
+        prod.style.visibility = "visible";
+        pre.style.visibility = "hidden";
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'smart_searchapp/header.html' %} {% load static %} {% static "pics" as pics %} {% block content %}
+
+<div class="container">
+    <div class="row down">
+        <div class="col">
+            <img src="{% static 'images/user.jpg' %}" alt="" width="100" height="100">
+
+            <p> {{ request.user.userinfo.name }} </p>
+            <p> {{ request.user.email }} </p>
+        </div>
+        <div class="col">
+            <h5>
+                <button class="btn btn-light"><a href="{% url 'user:wishlist' %}">Go to Wishlist </a><span
+                        class="fa fa-heart error"></span>
+                </button>
+            </h5>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <em>
+                <h3>Leave a feedback</h3>
+            </em> {% for msg in messages %}
+            <p class="error"> {{msg}}</p>
+            {% endfor %}
+            <form action="/user/feedback/" class="container-feedback" method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="email" class="form-control" value="{{ request.user.email }}" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" class="form-control" required name="subject">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <input type="text" id="message" class="form-control height-text" required name="message">
+                </div>
+                <div>
+                    <input type="submit" value="Send" class="btn btn-primary">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

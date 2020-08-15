@@ -1,0 +1,43 @@
+{% extends 'smart_searchapp/header.html' %}{% block content %}
+
+<div class="flex-product-container">
+    <div class="flex-item login">
+        <div class="">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="">
+                    <div class="col mb-4">
+                        <label for="name">Username</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <button class="btn btn-light"><span class="fa fa-user"></span></button>
+                            </div>
+                            <input type="text" name="username" id="name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col mb-4">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <button class="btn btn-light"><span class="fa fa-key"></span></button>
+                            </div>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+                    </div>
+                    {% for message in messages %}
+                    <p class="error"> {{message}}</p>
+                    {% endfor %} {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{request.GET.next}}"> {% endif %}
+                    <button class="btn btn-primary" type="submit">LogIn</button>
+                </div>
+            </form>
+            <br>
+            <p style="color: white;">New here ? <a href="{% url 'user:register' %}"><button class="btn btn-link">Register</button></a></p>
+        </div>
+    </div>
+</div>
+
+<div class="totop">
+    <button onclick="totop()" id="totop" class="btn" title="Click to return to top of the page"><span class="fa fa-angle-double-up" ></span></button>
+</div>
+{% endblock%}

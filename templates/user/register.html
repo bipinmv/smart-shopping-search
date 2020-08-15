@@ -1,0 +1,75 @@
+{% extends 'smart_searchapp/header.html' %}{% block content %}
+
+<div class="flex-container">
+    <br> {% if registered %}
+    <h4>Successfully Registered</h4>
+    {% else %}
+    <div class="register">
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="">
+                <div class="col mb-3">
+                    <label for="id_name">Name</label> {{ user_info.name }}
+                </div>
+                <em> {{ user_info.name.errors }}</em>
+                <div class="col mb-3">
+                    <label for="id_phone">Mobile</label> {{ user_info.phone }}
+                </div>
+                <em>{{ user_info.phone.errors }}</em>
+                <div class="col mb-3">
+                    <label for="id_username">Username</label> {{ user_form.username }}
+                </div>
+                <em> {{ user_form.username.errors }}</em>
+                <div class="col mb-3">
+                    <label for="id_email">Email</label> {{ user_form.email}}
+                </div>
+                <em>{{ user_form.email.errors }}</em>
+                <div class="col mb-4">
+                    <label for="id_password">Password</label> {{ user_form.password }}
+                </div>
+                <em>{{ user_form.password.errors }}</em>
+                <!--<div class="col mb-4">
+                    <label for="id_password2">Retype Password</label> {{ user_form.password2 }}
+                </div>
+                <em>{{ user_form.password2.errors }}</em>-->
+            </div>
+            <button class="btn btn-primary" type="submit" style="margin-left: 15px;">Register</button>
+        </form>
+
+        <div>
+            <br>
+            <p style="color: white;">Already have an account ?
+                <a href="{% url 'user:login' %}"><button class="btn btn-link">LogIn</button> </a></p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="totop">
+    <button onclick="totop()" id="totop" class="btn" title="Click to return to top of the page"><span
+            class="fa fa-angle-double-up"></span></button>
+</div>
+
+<script>
+    var fields = document.getElementsByTagName('input')
+    for (var i in fields) {
+        fields[i].className = 'form-control'
+            //fields[i].style.borderColor = 'grey'
+        if (i == 0) {
+            continue
+        } else {
+            fields[i].style.borderRadius = '20px'
+        }
+
+
+    }
+    //console.log(fields)
+    var errfield = document.getElementsByTagName('em')
+    for (var e in errfield) {
+        errfield[e].style.color = 'red'
+    }
+    //console.log(errfield)
+</script>
+
+{% endblock%}

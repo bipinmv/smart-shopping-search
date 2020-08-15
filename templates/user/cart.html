@@ -1,0 +1,58 @@
+{% extends 'smart_searchapp/header.html' %} {% load static %} {% static "pics" as pics %} {% block content %}
+<div class="flex-product-container">
+    <div class="flex-product-item table-responsive">
+        {% if citem %}
+        <h3 class="text-left">Check out</h3>
+        {% for add in messages %}
+        <div class="p-3 mb-2 bg-success text-white">{{ add }}</div>
+        {% endfor %}
+        <table class="table table-responsive-md table-borderless carttable">
+            <thead class="thead-light">
+                <tr>
+                    <th>Item</th>
+                    <th>Added on</th>
+                    <th>Unit Price</th>
+                    <!--<th>Quantity</th>
+                <th>Total</th>-->
+
+                </tr>
+            </thead>
+            {% for citem in citem %}
+            <tr style="align-items: center;">
+                <td>
+                    <a href="{% url 'smart_searchapp:product' citem.products.id %}">
+                        <img width="auto" height="200" src="{{ citem.products.img.url }}" alt="">
+                        <p class="bg-link">{{ citem.products.prodname }}</p>
+                    </a>
+                </td>
+
+                <td>{{ citem.date|date:"d M Y" }}</td>
+                <td>{{ citem.products.rate }}</td>
+                <!--<td>{{ citem.quantity }}</td>
+                <td>{{ citem.total }}</td>-->
+                <td>
+                    <a href="{% url 'user:delete_from_cart' citem.id %}" title="Remove from cart?">
+                        <p class="error"><span class="fa fa-remove"></span> </p>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2" class="text-right">Total Amount: </td>
+                <td class="text-primary">{{subtotal}}.00</td>
+            </tr>
+            </tbody>
+        </table>
+        {% else %}
+        <h3 style="margin-top: 100px;">Your cart is empty</h3>
+        {% endif %}
+        <a href="{% url 'smart_searchapp:index' %}" class="btn btn-warning"><span
+                class="fa fa-arrow-alt-circle-left"></span> Continue shopping</a>
+    </div>
+</div>
+
+<div class="totop">
+    <button onclick="totop()" id="totop" class="btn" title="Click to return to top of the page"><span
+            class="fa fa-angle-double-up"></span></button>
+</div>
+{% endblock %}

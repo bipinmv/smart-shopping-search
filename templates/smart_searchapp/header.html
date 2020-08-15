@@ -1,0 +1,223 @@
+<!DOCTYPE html> {% load static %} {% static "pics" as pics %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png" />
+    <title> Smart Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="{% static 'js/mobilenet.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/script.js' %}"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark header " id="nav">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="px-5 navbar-brand" href="{% url 'index' %}">
+            <h1>Smart Search</h1>
+        </a>
+
+        <div class="ml-5 collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item pr-3">
+                    <form action="/" method="get" class="form-inline my-2 my-lg-0 ">
+                        <div class="input-group">
+                            <input type="search" name="query" class="form-control" placeholder="Search for products" style="padding-right: 9em;">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+                <li class="nav-item pr-3">
+                    <!-- smart search button-->
+                    <button class="navbar-btn btn btn-success my-2 my-sm-0" data-toggle="modal" data-target="#exampleModalCenter">Smart Search</button>
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Smart Shopping search</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <!-- modal body -->
+                                <div class="modal-body">
+
+                                    <div class="text-center">
+
+                                        <button type="audiobtn" class="btn btn-info" data-toggle="modal" data-target="#modalAudio">Search by Audio <span
+                                                class='fas fa-microphone'></span></button>
+                                        <button id="videobtn" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalVideo">Search by Video <span
+                                                class='fas fa-camera'></span></button>
+
+                                    </div>
+
+                                    <!--Modal: Audio-->
+                                    <div class="modal fade" id="modalAudio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+
+                                            <!--Content-->
+                                            <div class="modal-content">
+
+                                                <!--Body-->
+                                                <div class="modal-body mb-0 p-0">
+                                                    <div class="embed-responsive">
+                                                        <div class="pulse-loader">
+                                                            <div></div>
+                                                            <div></div>
+                                                        </div>
+                                                        <p class="text-center result"></p>
+                                                        <p class="text-center output"></p>
+
+                                                    </div>
+
+                                                    <div class="modal-footer justify-content-center">
+                                                        <div class="">
+
+                                                            <form action="/" method="get" id="myForm">
+                                                                <button id="startbtn" class="btn btn-success">Start</button>
+                                                                <!--<button id="audiosearch" class="btn btn-primary" type="submit">Search</button>-->
+                                                                <input type="hidden" name="audioquery" id="audioquery" required>
+                                                            </form>
+                                                        </div>
+                                                        <script src="{% static 'js/audio_script.js' %}">
+                                                        </script>
+                                                    </div>
+
+                                                </div>
+
+                                                <!--Footer-->
+                                                <div class="modal-footer justify-content-center">
+                                                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md " data-dismiss="modal">Close</button>
+                                                </div>
+
+                                            </div>
+                                            <!--/.Content-->
+
+                                        </div>
+                                    </div>
+                                    <!--Modal: Audio-->
+
+                                    <!--Modal: Object-->
+                                    <div class="modal fade" id="modalVideo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+
+                                            <!--Content-->
+                                            <div class="modal-content">
+
+                                                <!--Body-->
+                                                <div class="modal-body mb-0 p-0">
+
+                                                    <div class="modal-footer justify-content-center">
+                                                        <video width="100%" id="video" autoplay muted></video>
+                                                        <canvas id="canvas" style="display: none;"></canvas>
+                                                        <div id="status"></div>
+                                                        <div id="result"></div>
+                                                        <div class="modal-footer">
+
+                                                            <button id="start" class="btn btn-success">Start</button>
+                                                            <button id="playbutton" class="btn btn-warning">Play/Pause</button>
+                                                            <button id="stop" class="btn btn-danger">Stop</button>
+                                                            <form action="/" method="get">
+                                                                <button id="search" class="btn btn-primary" type="submit">Search</button>
+                                                                <input type="hidden" name="objquery" id="objquery" required>
+                                                            </form>
+                                                        </div>
+                                                        <script src="{% static 'js/object_script.js' %}">
+                                                        </script>
+                                                    </div>
+
+                                                </div>
+
+                                                <!--Footer-->
+                                                <div class="modal-footer justify-content-center">
+                                                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+                                                </div>
+
+                                            </div>
+                                            <!--/.Content-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                {% if not user.is_authenticated %}
+
+                <li class="nav-item dropdown">
+                    <button class="btn btn-light text-dark btndrop" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Login
+                    </button>
+
+                    <div class="dropdown-menu hoverdrop">
+                        <form action="/user/login/" class="px-4 py-3" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="email">Username</label>
+                                <input type="text" name="username" class="form-control" id="email" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                            {% for message in messages %}
+                            <p> {{message}}</p>
+                            {% endfor %}
+
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </form>
+                        <!--<a href="{% url 'user:login' %}" style="position:auto;margin-left: 23px;">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#signupmodal">
+                                Log in
+                            </button></a> -->
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'user:register' %}" style="position:auto;margin-left: 23px;">
+                            <button class="btn btn-info" data-toggle="modal" data-target="#signupmodal">
+                                Sign up
+                            </button></a>
+
+                    </div>
+                </li>
+
+                {% else %}
+                <li class="nav-item pr-lg-5">
+                    <a href="{% url 'user:cart' %}"><button class="btn btn-cart"><span class="fa fa-shopping-cart">
+                                Cart</span></button></a>
+                </li>
+                <li class="mr-5"></li>
+                <li class="mr-5"></li>
+                <li class="mr-5"></li>
+                <li class="nav-item">
+                    <a href="{% url 'user:profile' %}" class="nav-link">Hey! {{ request.user.userinfo.name }}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'user:logout' %}"><button class="btn btn-dark">Log out</button> </a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+    </nav>
+    {% block content %} {% endblock %}
+</body>
+
+</html>

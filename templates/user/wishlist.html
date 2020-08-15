@@ -1,0 +1,35 @@
+{% extends 'smart_searchapp/header.html' %} {% load static %} {% static "pics" as pics %} {% block content %}
+<div class="container">
+    {% if witem %}
+    <em class="down text-left">
+        <h3>Your Wishlist</h3>
+    </em> {% for add in messages %}
+    <div class="p-3 mb-2 bg-success text-white text-center">{{ add }}</div>
+    {% endfor %}
+</div>
+<div class="wishlist-container">
+    {% for witem in witem %}
+    <div class="wishlist-item row">
+        <div class=" witem">
+            <a href="{% url 'smart_searchapp:product' witem.product.id %}">
+                <img width="auto" height="200" src="{{ witem.product.img.url }}" alt="">
+            </a>
+        </div>
+        <div class="col witem2">
+            <a href="{% url 'smart_searchapp:product' witem.product.id %}">
+                <h5 class="">{{ witem.product.prodname }}</h5>
+            </a>
+            <p>₹ {{ witem.product.rate }}</p>
+            <a href="{% url 'user:remove_from_wishlist' witem.id %}" title="Remove from wishlist">Remove
+                <span class="error fa fa-remove"></span>
+            </a>
+        </div>
+    </div>
+    {% endfor %} {% else %}
+    <h3 style="margin-top: 100px;">Your wishlist is empty</h3>
+    {% endif %}
+    <a href="{% url 'smart_searchapp:index' %}" class="btn btn-warning"><span
+            class="fa fa-arrow-alt-circle-left"></span> Continue shopping</a>
+</div>
+
+{% endblock %}

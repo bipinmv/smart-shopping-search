@@ -1,0 +1,37 @@
+{% extends 'smart_searchapp/header.html' %} {% load static %} {% static "pics" as pics %} {% block content %}
+
+<div class="new-container">
+    {% if products%}
+    <div class="flex-container">
+        {%for i in products%}
+        <a href="{% url 'smart_searchapp:product' id=i.id %}">
+            <div class="flex-item product">
+
+                <p> {{i.prodname}}</p>
+                <div>
+                    <img src="{{i.img.url}}" alt="Cant load image" style="max-width:100%;height:200px;">
+                </div>
+
+                <div>
+                    <p style="margin-top: 25px;"> ₹ {{i.rate}}</p>
+                </div>
+
+            </div>
+        </a>
+        {%endfor%} {%else%}
+        <div class="no-record">
+            <img src="{% static 'images/oops.jpg' %}" alt="">
+            <br>
+            <p>No Items found</p>
+        </div>
+    </div>{%endif%}
+</div>
+
+<!--<div style="position: fixed;left:0;bottom:50%">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Smart Search</button>
+</div>-->
+<div class="totop">
+    <button onclick="totop()" id="totop" class="btn" title="Click to return to top of the page"><span class="fa fa-angle-double-up" ></span></button>
+</div>
+
+{% endblock %}
